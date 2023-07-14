@@ -1,0 +1,33 @@
+version: '3'
+services:
+  www:
+    image: php:apache
+    volumes:
+      - "./app:/var/www/html"
+      - "./docker/apache-config.conf:/etc/apache2/conf-available/apache-config.conf"
+      - "./docker/apache-config.conf:/etc/apache2/conf-enabled/apache-config.conf"
+      - "./docker/apache/apache-config.conf:/etc/apache2/sites-available/000-default.conf"
+      - "./app/PCOS_AI:/var/www/html/PCOS_AI"
+    ports:
+      - 8080:80
+      - 443:443 # SSL Service
+    command: >
+       bash -c "apt-get update && apt-get install -y libzip-dev python3 && docker-php-ext-install mysqli pdo pdo_mysql zip && a2enmod rewrite && apache2-foreground"
+
+  db: 
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=dbback
+      - MYSQL_USER=php_docker
+      - MYSQL_PASSWORD=password # this should live in an env var
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1 # equivalent to True
+    volumes:
+      - "./docker/db:/docker-entrypoint-initdb.d"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8001:80
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
