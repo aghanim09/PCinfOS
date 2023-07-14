@@ -5,6 +5,7 @@
 - Run Docker Engine
 - run "docker compose up"
 - Open localhost 8080:80
+- Backend is connected with Frontend, AI, Frontend and Backend are dockerized
   
 2. Frontend_AI:
 - AI is connected to the frontend and dockerized, however, in the "suggestions" page it doesn't show any recommendations as it is not connected to the backend database, with the input data.
