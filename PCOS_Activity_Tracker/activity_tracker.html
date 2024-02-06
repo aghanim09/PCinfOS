@@ -1,0 +1,106 @@
+<!-- activity_tracker.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/style.css"> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+<div class="container">
+    <h2>Track Your Physical Activity</h2>
+    <form id="activityForm" method="post" action="process_data.php">
+    <div class ="form group">
+        <label for="activityDate">Date:</label>
+        <input type="date" id="activityDate" name="activityDate" required>
+    </div>
+    <div class="form group">
+        <h3>Select Activities:</h3>
+        <ul class="checklist">
+            <li class="checklist-item">
+                <input type="radio" id="walking" name="activity" value="Walking">
+                <label for="walking">Walking</label>
+            </li>
+            <li class="checklist-item">
+                <input type="radio" id="running" name="activity" value="Running">
+                <label for="running">Running</label>
+            </li>
+            <li class="checklist-item">
+                <input type="radio" id="hiit" name="activity" value="Hiit">
+                <label for="hiit">High-intensity interval training </label>
+            </li>
+            <li class="checklist-item">
+                <input type="radio" id="resistance_traning" name="activity" value="Resistance">
+                <label for="resistance_traning">Resistance training </label>
+            </li>
+            <li class="checklist-item">
+                <input type="radio" id="pilates" name="activity" value="Pilates">
+                <label for="pilates">Pilates </label>
+            </li>
+            <li class="checklist-item">
+                <input type="radio" id="yoga" name="activity" value="Yoga">
+                <label for="yoga">Yoga </label>
+            </li>
+            <li class="checklist-item">
+                <input type="radio" id="meditation" name="activity" value="Meditation">
+                <label for="meditation">Meditation </label>
+            </li>
+            <li class="checklist-item">
+                <input type="radio" id="other" name="otheractivity" value="Other">
+                <label for="other">Other</label>
+                <input type="text" id="otherActivity" name="otherActivity" placeholder="Specify other activity" style="display: none;">
+            </li>
+        </ul>
+        <h3>Enter distance/duration/intensity:</h3>
+        <div class="form-group">
+            <label for="distance">Distance:</label>
+            <input type="text"class="form-control" id="distance" name="distance" placeholder="Enter distance (e.g., miles, km)" required>
+        </div>
+        <div class="form-group">
+            <label for="duration">Duration:</label>
+            <input type="text"class="form-control" id="duration" name="duration" placeholder="Enter duration (e.g., 30 minutes)" required>
+        </div>
+        <div class="form-group">
+            <label for="intensity">Intensity:</label>
+            <input type="text" class="form-control" id="intensity" name="intensity" placeholder="Enter intensity level" required>
+            </div>
+
+    <button type="submit">Log Activity</button>
+</form>
+
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="public/script.js"></script>
+<script>
+    $(function(){
+      $("#header-placeholder").load("public/templates/header.html");
+      $("#footer-placeholder").load("public/templates/footer.html");
+    });
+    </script>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const activityRadio = document.getElementsByName('activity');
+        const otherActivityInput = document.getElementById('otherActivity');
+
+        activityRadio.forEach(radio => {
+            radio.addEventListener('change', function () {
+                if (radio.value === 'Other') {
+                    otherActivityInput.style.display = 'block';
+                } else {
+                    otherActivityInput.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
+
+
+

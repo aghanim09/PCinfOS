@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/style.css"> <!-- Ensure this is the same stylesheet -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<div id="visualization"></div>
+
+<script>
+
+// fetch('/path/to/your/data/endpoint')
+//   .then(response => response.json())
+//   .then(data => {
+//     // Call a function to create a visualization with the data
+//     createVisualization(data);
+//   });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Mock data
+    const data = [
+        { activity_type: "Running", duration: 30,},
+        { activity_type: "Walking", duration: 45 },
+        { activity_type: "Cycling", duration: 60 },
+    ];
+
+    // Call the visualization function directly with mock data
+    createVisualization(data);
+});
+
+function createVisualization(data) {
+    const svgWidth = 600, svgHeight = 400, margin = { top: 20, right: 20, bottom: 50, left: 50 },
+        width = svgWidth - margin.left - margin.right,
+        height = svgHeight - margin.top - margin.bottom;
+
+    const svg = d3.select('#visualization').append('svg')
+        .attr('width', svgWidth)
+        .attr('height', svgHeight)
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    const xScale = d3.scaleBand()
+        .rangeRound([0, width])
+        .padding(0.1)
+        .domain(data.map((d) => d.activity_type));
+
+    const yScale = d3.scaleLinear()
+        .rangeRound([height, 0])
+        .domain([0, d3.max(data, (d) => d.duration)]);
+
+    // Append x-axis
+    svg.append('g')
+        .attr('class', 'axis axis--x')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(d3.axisBottom(xScale));
+
+    // Append y-axis
+    svg.append('g')
+        .attr('class', 'axis axis--y')
+        .call(d3.axisLeft(yScale).ticks(10))
+        .append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 6)
+        .attr('dy', '0.71em')
+        .attr('text-anchor', 'end')
+        .text('Duration');
+
+    // Create bars
+    svg.selectAll('.bar')
+        .data(data)
+        .enter().append('rect')
+        .attr('class', 'bar')
+        .attr('fill', 'lightpink')
+        .attr('x', (d) => xScale(d.activity_type))
+        .attr('y', (d) => yScale(d.duration))
+        .attr('width', xScale.bandwidth())
+        .attr('height', (d) => height - yScale(d.duration));
+
+    // Add labels with date
+    svg.selectAll('.label')
+        .data(data)
+        .enter().append('text')
+        .attr('class', 'label')
+        .attr('x', (d) => xScale(d.activity_type) + xScale.bandwidth() / 2)
+        .attr('y', (d) => yScale(d.duration) - 10)
+        .attr('text-anchor', 'middle')
+        .text((d) => d.activity_date); // Assuming date is available in the data
+
+    // Optional: Add labels to bars here if needed
+}
+
+
+</script>
+
+
+<div id="footer-placeholder"></div>
+
+<script src="public/script.js"></script>
+<script>
+    $(function(){
+      $("#header-placeholder").load("public/templates/header.html");
+      $("#footer-placeholder").load("public/templates/footer.html");
+    });
+    </script>
+
+</body>
+</html>

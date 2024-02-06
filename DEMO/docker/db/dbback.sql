@@ -254,6 +254,21 @@ CREATE TABLE `WeightTracking` (
   `profileId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
+--
+-- Tabellenstruktur für Tabelle `Activity`
+--
+
+CREATE TABLE 'Activity' (
+    activityId INTEGER PRIMARY KEY AUTOINCREMENT,
+    userId INTEGER NOT NULL,
+    activityDate DATE,
+    activityType TEXT,
+    distance INTEGER, -- in meters
+    duration INTEGER, -- in minutes
+    intensity TEXT
+);
+
 --
 -- Indizes der exportierten Tabellen
 --
@@ -433,6 +448,12 @@ ALTER TABLE `WeightTracking`
 --
 ALTER TABLE `AcneTracking`
   ADD CONSTRAINT `AcneTracking_ibfk_1` FOREIGN KEY (`profileId`) REFERENCES `Profile` (`profileId`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints der Tabelle `Activity`
+--
+ALTER TABLE 'Activity'
+  ADD CONSTRAINT 'Activity_ibfk_1' FOREIGN KEY ('userId') REFERENCES 'Login' ('userId') ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints der Tabelle `FoodTracking`
